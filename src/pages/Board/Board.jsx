@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { DragDropContext } from "react-beautiful-dnd";
+import { CSVLink } from 'react-csv';
 import DraggableElement from "./DraggableElement";
 import Header from "../../components/Header";
 import { tasks } from '../../data/tasks.json';
@@ -9,14 +10,23 @@ const Board = () => {
   const [elements, setElements] = React.useState({});
   const [tasksList, setTasks] = React.useState(tasks);
   const [lists, setLists] = React.useState([]);
+  const [CSVData, setCSVData] = React.useState([]);
 
-  const getItems = (prefix) =>
-    tasksList.filter((f) => f.Status === prefix).map((t, i) => ({
+  const getItems = (prefix) => {
+    let mappedItems = tasksList.filter((f) => f.Status === prefix).map((t, i) => ({
       id: `${i}`,
       prefix: t?.Status,
       content: t?.Task,
-      description: t?.Description
+      description: t?.Description,
+      date: t?.Date
     }));
+
+    if (mappedItems?.length) {
+      mappedItems = mappedItems?.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    return mappedItems;
+  }
 
   const removeFromList = (list, index) => {
   const result = Array.from(list);
@@ -34,10 +44,15 @@ const Board = () => {
     const list = Array.from(new Set(tasksList?.map((t) => t?.Status))) || [];
     setLists(list);
 
+    setCSVData(Object.values(list.reduce(
+      (acc, listKey) => ({ ...acc, [listKey]: getItems(listKey) }),
+      {}
+    )).flat());
+
     return list.reduce(
       (acc, listKey) => ({ ...acc, [listKey]: getItems(listKey) }),
       {}
-    );;
+    );
   }
 
   useEffect(() => {
@@ -53,7 +68,6 @@ const Board = () => {
       return;
     }
     const listCopy = { ...elements };
-    console.log(listCopy, result);
 
     const sourceList = listCopy[result.source.droppableId];
     const [removedElement, newSourceList] = removeFromList(
@@ -68,12 +82,20 @@ const Board = () => {
       removedElement
     );
 
+    setCSVData(Object.values(listCopy).flat());
     setElements(listCopy);
   };
 
   return (
     <>
       <Header />
+      <CSVButton>
+        <CSVLink data={CSVData} filename="Tasks.csv" rel="button">
+          <span>
+            Export
+          </span>
+        </CSVLink>
+      </CSVButton>
       <DragDropContextContainer>
         <DragDropContext onDragEnd={onDragEnd}>
           <ListGrid>
@@ -96,8 +118,25 @@ export default Board;
 const DragDropContextContainer = styled.div`
   padding: 5%;
   background: linear-gradient(180deg, #182a4d 0%, #172b4d 100%);
-  margin-top: 4.5em;
   min-height: 100vh;
+`;
+
+const CSVButton = styled.div`
+  margin-top: 4.5em;
+  background: #182a4d;
+
+  a {
+    text-decoration: none;
+    color: white;
+    font-weight: normal;
+    margin: 5%;
+    background: #ffffff3d;
+    border-radius: 4px;
+
+    span {
+      padding: 1em;
+    }
+  }
 `;
 
 const ListGrid = styled.div`

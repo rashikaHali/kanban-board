@@ -14,7 +14,7 @@ const ListItem = ({ item, index }) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <CardHeader>{item?.content}</CardHeader>
+            <CardHeader>{`${item?.content} - ${item?.date}`}</CardHeader>
             <CardFooter>
               <span>{item?.description}</span>
               <Author>

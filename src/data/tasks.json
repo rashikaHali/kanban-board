@@ -19,6 +19,12 @@
             "Status": "ToDo"
         },
         {
+            "Task": "Stakeholder mapping",
+            "Description": "Create a stakeholder chart to label each as Supporter, Neutral or Against",
+            "Date": "7/15/20",
+            "Status": "Doing"
+        },
+        {
             "Task": "Client Discussion",
             "Description": "Discussion with clients on scope",
             "Date": "7/5/20",
@@ -29,12 +35,6 @@
             "Description": "Design roadmap for the next month, quarter and year",
             "Date": "7/8/20",
             "Status": "Done"
-        },
-        {
-            "Task": "Stakeholder mapping",
-            "Description": "Create a stakeholder chart to label each as Supporter, Neutral or Against",
-            "Date": "7/15/20",
-            "Status": "Doing"
         },
         {
             "Task": "Team planning",

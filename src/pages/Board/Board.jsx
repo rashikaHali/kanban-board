@@ -29,15 +29,30 @@ const Board = () => {
   }
 
   const removeFromList = (list, index) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(index, 1);
-  return [removed, result];
+    const result = Array.from(list);
+    const [removed] = result.splice(index, 1);
+    return [removed, result];
   };
 
   const addToList = (list, index, element) => {
-  const result = Array.from(list);
-  result.splice(index, 0, element);
-  return result;
+    const result = Array.from(list);
+    result.splice(index, 0, element);
+    return result;
+  };
+
+  const addTask = (status) => {
+    console.log('Pending', status);
+    // const newTask = {
+    //   content: `Added Task - ${elements[status]?.length + 1}`,
+    //   date: "7/30/20",
+    //   description: "Description",
+    //   id: `${elements[status]?.length + 1}`,
+    //   prefix: status
+    // };
+
+    // elements[status]?.push(newTask);
+    // console.log(elements);
+    // setElements(elements);
   };
 
   const generateLists = () => {
@@ -104,6 +119,7 @@ const Board = () => {
                 elements={elements[`${listKey}`]}
                 key={listKey}
                 prefix={listKey}
+                addTask={addTask}
               />
             ))}
           </ListGrid>

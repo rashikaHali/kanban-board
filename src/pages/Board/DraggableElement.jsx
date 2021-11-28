@@ -3,7 +3,7 @@ import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import ListItem from "./ListItem";
 
-const DraggableElement = ({ prefix, elements }) => (
+const DraggableElement = ({ prefix, elements, addTask }) => (
   <DroppableStyles>
     <ColumnHeader>{`${prefix} (${elements?.length})`}</ColumnHeader>
     <Droppable droppableId={`${prefix}`}>
@@ -16,6 +16,9 @@ const DraggableElement = ({ prefix, elements }) => (
         </div>
       )}
     </Droppable>
+    <Add>
+      <button onClick={() => addTask(prefix)}>+</button>
+    </Add>
   </DroppableStyles>
 );
 
@@ -27,6 +30,10 @@ const ColumnHeader = styled.div`
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
+`;
+
+const Add = styled.div`
+  text-align: center;
 `;
 
 const DroppableStyles = styled.div`

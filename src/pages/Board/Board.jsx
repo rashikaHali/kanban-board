@@ -41,18 +41,20 @@ const Board = () => {
   };
 
   const addTask = (status) => {
-    console.log('Pending', status);
-    // const newTask = {
-    //   content: `Added Task - ${elements[status]?.length + 1}`,
-    //   date: "7/30/20",
-    //   description: "Description",
-    //   id: `${elements[status]?.length + 1}`,
-    //   prefix: status
-    // };
+    const newTask = {
+      content: `Added Task - ${status} - ${elements[status]?.length + 1}`,
+      date: "7/30/20",
+      description: "Description",
+      id: `${elements[status]?.length + 1}`,
+      prefix: status
+    };
 
-    // elements[status]?.push(newTask);
-    // console.log(elements);
-    // setElements(elements);
+    setElements(
+      {
+        ...elements,
+        [status]: elements[status].concat(newTask)
+      }
+    );
   };
 
   const generateLists = () => {

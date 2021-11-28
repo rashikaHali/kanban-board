@@ -3,7 +3,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { generateFromString } from "generate-avatar";
 import styled from "styled-components";
 
-const ListItem = ({ item, index }) => {
+const ListItem = ({ item, index, removeTask }) => {
   return (
     <Draggable draggableId={`${item.prefix}-${item.id}`} index={index}>
       {(provided, snapshot) => {
@@ -14,7 +14,10 @@ const ListItem = ({ item, index }) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <CardHeader>{`${item?.content} - ${item?.date}`}</CardHeader>
+            <CardHeader>
+              {`${item?.content} - ${item?.date}`}
+              <button onClick={() => removeTask(item?.prefix, index)}>X</button>
+            </CardHeader>
             <CardFooter>
               <span>{item?.description}</span>
               <Author>
@@ -43,6 +46,17 @@ const CardHeader = styled.div`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    background: #ebecf0;
+    color: #b92525;
+    font-weight: bold;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+  }
 `;
 
 const Author = styled.div`

@@ -57,6 +57,15 @@ const Board = () => {
     );
   };
 
+  const removeTask = (status, index) => {
+    setElements(
+      {
+        ...elements,
+        [status]: elements[status].filter((item, ind) => ind !== index)
+      }
+    );
+  };
+
   const generateLists = () => {
     const list = Array.from(new Set(tasksList?.map((t) => t?.Status))) || [];
     setLists(list);
@@ -122,6 +131,7 @@ const Board = () => {
                 key={listKey}
                 prefix={listKey}
                 addTask={addTask}
+                removeTask={removeTask}
               />
             ))}
           </ListGrid>

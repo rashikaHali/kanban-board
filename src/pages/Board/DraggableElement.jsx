@@ -3,14 +3,14 @@ import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import ListItem from "./ListItem";
 
-const DraggableElement = ({ prefix, elements, addTask }) => (
+const DraggableElement = ({ prefix, elements, addTask, removeTask }) => (
   <DroppableStyles>
     <ColumnHeader>{`${prefix} (${elements?.length})`}</ColumnHeader>
     <Droppable droppableId={`${prefix}`}>
       {(provided) => (
         <div {...provided.droppableProps} ref={provided.innerRef}>
           {elements?.map((item, index) => (
-            <ListItem key={`${item.prefix}-${item.id}`} item={item} index={index} />
+            <ListItem key={`${item.prefix}-${item.id}`} item={item} index={index} removeTask={removeTask} />
           ))}
           {provided.placeholder}
         </div>

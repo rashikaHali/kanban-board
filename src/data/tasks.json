@@ -1,0 +1,76 @@
+{
+    "tasks": [
+        {
+            "Task": "Training on tech",
+            "Description": "Provide training on ML",
+            "Date": "7/9/20",
+            "Status": "ToDo"
+        },
+        {
+            "Task": "Training on business",
+            "Description": "Provide training on Supply chain",
+            "Date": "7/12/20",
+            "Status": "ToDo"
+        },
+        {
+            "Task": "Data exploration",
+            "Description": "Perform EDA on the dataset and identify anomalies",
+            "Date": "7/19/20",
+            "Status": "ToDo"
+        },
+        {
+            "Task": "Client Discussion",
+            "Description": "Discussion with clients on scope",
+            "Date": "7/5/20",
+            "Status": "Done"
+        },
+        {
+            "Task": "Roadmap design",
+            "Description": "Design roadmap for the next month, quarter and year",
+            "Date": "7/8/20",
+            "Status": "Done"
+        },
+        {
+            "Task": "Stakeholder mapping",
+            "Description": "Create a stakeholder chart to label each as Supporter, Neutral or Against",
+            "Date": "7/15/20",
+            "Status": "Doing"
+        },
+        {
+            "Task": "Team planning",
+            "Description": "Reach out to the sponsor for team structure",
+            "Date": "7/20/20",
+            "Status": "Doing"
+        },
+        {
+            "Task": "Workshop 1",
+            "Description": "Data analytics workshop",
+            "Date": "7/20/20",
+            "Status": "Done"
+        },
+        {
+            "Task": "Workshop 2",
+            "Description": "Tableau dashboarding workshop",
+            "Date": "7/27/20",
+            "Status": "Doing"
+        },
+        {
+            "Task": "Data designing",
+            "Description": "Create a structure of the data required for dashboarding",
+            "Date": "7/12/20",
+            "Status": "ToDo"
+        },
+        {
+            "Task": "Client review 1",
+            "Description": "Review the mock up with clients",
+            "Date": "7/24/20",
+            "Status": "Done"
+        },
+        {
+            "Task": "Client review 2",
+            "Description": "Review the changes with clients",
+            "Date": "7/31/20",
+            "Status": "Doing"
+        }
+    ]
+}

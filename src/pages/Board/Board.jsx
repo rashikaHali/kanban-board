@@ -10,7 +10,6 @@ const Board = () => {
   const [elements, setElements] = React.useState({});
   const [tasksList, setTasks] = React.useState(tasks);
   const [lists, setLists] = React.useState([]);
-  const [CSVData, setCSVData] = React.useState([]);
 
   const getItems = (prefix) => {
     let mappedItems = tasksList.filter((f) => f.Status === prefix).map((t, i) => ({
@@ -27,18 +26,6 @@ const Board = () => {
 
     return mappedItems;
   }
-
-  const removeFromList = (list, index) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(index, 1);
-    return [removed, result];
-  };
-
-  const addToList = (list, index, element) => {
-    const result = Array.from(list);
-    result.splice(index, 0, element);
-    return result;
-  };
 
   const addTask = (status) => {
     const newTask = {
@@ -58,10 +45,11 @@ const Board = () => {
   };
 
   const removeTask = (status, index) => {
+    console.log(status, index, elements);
     setElements(
       {
         ...elements,
-        [status]: elements[status].filter((item, ind) => ind !== index)
+        [status?.prefix]: elements[status?.prefix].filter((item, ind) => ind !== index)
       }
     );
   };
@@ -69,11 +57,6 @@ const Board = () => {
   const generateLists = () => {
     const list = Array.from(new Set(tasksList?.map((t) => t?.Status))) || [];
     setLists(list);
-
-    setCSVData(Object.values(list.reduce(
-      (acc, listKey) => ({ ...acc, [listKey]: getItems(listKey) }),
-      {}
-    )).flat());
 
     return list.reduce(
       (acc, listKey) => ({ ...acc, [listKey]: getItems(listKey) }),
@@ -88,6 +71,19 @@ const Board = () => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const removeFromList = (list, index) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(index, 1);
+    return [removed, result];
+  };
+
+  const addToList = (list, index, element, id) => {
+    const result = Array.from(list);
+    element['prefix'] = id;
+    result.splice(index, 0, element);
+    return result;
+  };
 
   const onDragEnd = (result) => {
     if (!result.destination) {
@@ -105,10 +101,10 @@ const Board = () => {
     listCopy[result.destination.droppableId] = addToList(
       destinationList,
       result.destination.index,
-      removedElement
+      removedElement,
+      result.destination.droppableId
     );
 
-    setCSVData(Object.values(listCopy).flat());
     setElements(listCopy);
   };
 
@@ -116,7 +112,7 @@ const Board = () => {
     <>
       <Header />
       <CSVButton>
-        <CSVLink data={CSVData} filename="Tasks.csv" rel="button">
+        <CSVLink data={Object.values(elements).flat() || []} filename="Tasks.csv" rel="button">
           <span>
             Export
           </span>

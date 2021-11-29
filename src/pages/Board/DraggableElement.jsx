@@ -10,7 +10,7 @@ const DraggableElement = ({ prefix, elements, addTask, removeTask }) => (
       {(provided) => (
         <div {...provided.droppableProps} ref={provided.innerRef}>
           {elements?.map((item, index) => (
-            <ListItem key={`${item.prefix}-${item.id}`} item={item} index={index} removeTask={removeTask} />
+            <ListItem key={`${item?.prefix}-${item?.id}-${item?.content}`} item={item} index={index} removeTask={removeTask} />
           ))}
           {provided.placeholder}
         </div>

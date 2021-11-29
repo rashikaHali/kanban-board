@@ -16,7 +16,7 @@ const ListItem = ({ item, index, removeTask }) => {
           >
             <CardHeader>
               {`${item?.content} - ${item?.date}`}
-              <button onClick={() => removeTask(item?.prefix, index)}>X</button>
+              <button onClick={() => removeTask(item, index)}>X</button>
             </CardHeader>
             <CardFooter>
               <span>{item?.description}</span>

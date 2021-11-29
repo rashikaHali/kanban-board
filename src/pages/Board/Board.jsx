@@ -3,13 +3,14 @@ import styled from "styled-components";
 import { DragDropContext } from "react-beautiful-dnd";
 import { CSVLink } from 'react-csv';
 import Header from "../../components/Header";
-import { tasks } from '../../data/tasks.json';
+// import { tasks } from '../../data/tasks.json';
 import DraggableElement from "./DraggableElement";
 import EditModal from "./EditModal";
+import XLSX from 'xlsx';
 
 const Board = () => {
   const [elements, setElements] = React.useState({});
-  const [tasksList, setTasks] = React.useState(tasks);
+  const [tasksList, setTasks] = React.useState([]);
   const [lists, setLists] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [status, setSelectedStatus] = React.useState('');
@@ -74,12 +75,11 @@ const Board = () => {
   }
 
   useEffect(() => {
-    if (tasks?.length) {
-      setTasks(tasks);
+    if (tasksList?.length) {
       setElements(generateLists());
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [tasksList]);
 
   const removeFromList = (list, index) => {
     const result = Array.from(list);
@@ -117,16 +117,92 @@ const Board = () => {
     setElements(listCopy);
   };
 
+  /* generate an array of column objects */
+  const make_cols = (refstr) => {
+    let o = [],
+      C = XLSX.utils.decode_range(refstr).e.c + 1;
+    for (var i = 0; i < C; ++i) o[i] = { name: XLSX.utils.encode_col(i), key: i };
+    return o;
+  };
+
+  const handleFile = (file) => {
+    /* Boilerplate to set up FileReader */
+    const reader = new FileReader();
+    const rABS = !!reader.readAsBinaryString;
+    reader.onload = e => {
+      /* Parse data */
+      const bstr = e.target.result;
+      const wb = XLSX.read(bstr, { type: rABS ? "binary" : "array" });
+      /* Get first worksheet */
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      /* Convert array of arrays */
+      const data = XLSX.utils.sheet_to_json(ws);
+      /* Update state */
+
+      console.log({ cols: make_cols(ws["!ref"]), data: data });
+        
+      setTasks(data);
+    };
+
+    if (rABS) reader.readAsBinaryString(file);
+    else reader.readAsArrayBuffer(file);
+  }
+
+  const handleChange = (e) => {
+    const files = e.target.files;
+    if (files && files[0]) handleFile(files[0]);
+  };
+
+  const SheetJSFT = [
+    "xlsx",
+    "xlsb",
+    "xlsm",
+    "xls",
+    "xml",
+    "csv",
+    "txt",
+    "ods",
+    "fods",
+    "uos",
+    "sylk",
+    "dif",
+    "dbf",
+    "prn",
+    "qpw",
+    "123",
+    "wb*",
+    "wq*",
+    "html",
+    "htm"
+  ]
+    .map(function(x) {
+      return "." + x;
+    })
+    .join(",");  
+
   return (
     <>
       <Header />
-      <CSVButton>
-        <CSVLink data={Object.values(elements).flat() || []} filename="Tasks.csv" rel="button">
-          <span>
-            Export
-          </span>
-        </CSVLink>
-      </CSVButton>
+      <Flex>
+        <CSVButton>
+          <CSVLink data={Object.values(elements).flat() || []} filename="Tasks.csv" rel="button">
+            <span>
+              Export to CSV
+            </span>
+          </CSVLink>
+        </CSVButton>
+        <div>
+          <label htmlFor="file">Spreadsheet</label>
+          <input
+            type="file"
+            className="form-control"
+            id="file"
+            accept={SheetJSFT}
+            onChange={handleChange}
+          />
+        </div>
+      </Flex>
       <DragDropContextContainer>
         <DragDropContext onDragEnd={onDragEnd}>
           <ListGrid>
@@ -164,11 +240,12 @@ const DragDropContextContainer = styled.div`
 `;
 
 const CSVButton = styled.div`
-  margin-top: 4.5em;
   background: #182a4d;
+  width: 20%;
 
   a {
     text-decoration: none;
+    width: 100%;
     color: white;
     font-weight: normal;
     margin: 5%;
@@ -179,6 +256,11 @@ const CSVButton = styled.div`
       padding: 1em;
     }
   }
+`;
+
+const Flex = styled.div`
+  display: flex;
+  margin-top: 4.5em;
 `;
 
 const ListGrid = styled.div`

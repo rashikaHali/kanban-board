@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -22,9 +21,6 @@ const EditTask = ({ open, updateClick, status, index, elements, setElements }) =
 
   return (
     <div>
-      <Button variant="outlined" onClick={() => updateClick(true)}>
-        Edit Task
-      </Button>
       <Dialog open={open} onClose={() => updateClick(false)}>
         <DialogTitle>Edit Task</DialogTitle>
         <DialogContent>

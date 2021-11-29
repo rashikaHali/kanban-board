@@ -2,14 +2,18 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { DragDropContext } from "react-beautiful-dnd";
 import { CSVLink } from 'react-csv';
-import DraggableElement from "./DraggableElement";
 import Header from "../../components/Header";
 import { tasks } from '../../data/tasks.json';
+import DraggableElement from "./DraggableElement";
+import EditModal from "./EditModal";
 
 const Board = () => {
   const [elements, setElements] = React.useState({});
   const [tasksList, setTasks] = React.useState(tasks);
   const [lists, setLists] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [status, setSelectedStatus] = React.useState('');
+  const [index, setSelectedIndex] = React.useState();
 
   const getItems = (prefix) => {
     let mappedItems = tasksList.filter((f) => f.Status === prefix).map((t, i) => ({
@@ -45,13 +49,18 @@ const Board = () => {
   };
 
   const removeTask = (status, index) => {
-    console.log(status, index, elements);
     setElements(
       {
         ...elements,
         [status?.prefix]: elements[status?.prefix].filter((item, ind) => ind !== index)
       }
     );
+  };
+
+  const editTask = (status, index) => {
+    setOpen(true);
+    setSelectedStatus(status);
+    setSelectedIndex(index);
   };
 
   const generateLists = () => {
@@ -128,11 +137,20 @@ const Board = () => {
                 prefix={listKey}
                 addTask={addTask}
                 removeTask={removeTask}
+                editTask={editTask}
               />
             ))}
           </ListGrid>
         </DragDropContext>
       </DragDropContextContainer>
+      <EditModal
+        open={open}
+        updateClick={setOpen}
+        status={status}
+        index={index}
+        setElements={setElements}
+        elements={elements}
+      />
     </>
   );
 }

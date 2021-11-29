@@ -3,7 +3,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { generateFromString } from "generate-avatar";
 import styled from "styled-components";
 
-const ListItem = ({ item, index, removeTask }) => {
+const ListItem = ({ item, index, removeTask, editTask }) => {
   return (
     <Draggable draggableId={`${item.prefix}-${item.id}`} index={index}>
       {(provided, snapshot) => {
@@ -16,7 +16,10 @@ const ListItem = ({ item, index, removeTask }) => {
           >
             <CardHeader>
               {`${item?.content} - ${item?.date}`}
-              <button onClick={() => removeTask(item, index)}>X</button>
+              <div>
+                <button onClick={() => removeTask(item, index)}>X</button>
+                <button onClick={() => editTask(item?.prefix, index)}>E</button>
+              </div>
             </CardHeader>
             <CardFooter>
               <span>{item?.description}</span>
